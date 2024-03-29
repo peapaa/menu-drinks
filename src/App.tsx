@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import styles from "./App.module.scss";
 
-function App() {
+import InputFiled from "./components/InputFiled";
+import ListProducts from "./components/ListProducts";
+
+const App: React.FC = () => {
+  const [search, setSearch] = useState<string>("a");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [list, setList] = useState([]);
+  const url = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${search}`;
+  const fetchUrl = async () => {
+    const response = await fetch(url);
+    const data = await response.json();
+    setList(data.drinks);
+  };
+  useEffect(() => {
+    fetchUrl();
+  }, [search]);
+
   return (
-    <div className="App">
+    <div className={styles.app}>
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <InputFiled search={search} setSearch={setSearch} loading={loading} />
+        <ListProducts data={list} />
       </header>
     </div>
   );
-}
+};
 
 export default App;
