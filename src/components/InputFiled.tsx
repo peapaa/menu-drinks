@@ -1,18 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./product.module.scss";
-interface Props {
-  search: string;
-  loading: boolean;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
-}
-const InputFiled: React.FC<Props> = ({ search, loading, setSearch }) => {
-  console.log(search, loading, setSearch);
+import { ThemeContext, MyContextValue, Drink } from "../Context";
+
+const InputFiled: React.FC = () => {
+  const value: MyContextValue | undefined = useContext(ThemeContext);
+  console.log("value file input", value);
+
   return (
     <div className={styles.headerSearch}>
       <input
         type="text"
         placeholder=" please enter name "
         className={styles.input}
+        value={value?.search}
+        onChange={(e) => value?.setSearch(e.target.value)}
       />
       <button className={styles.searchProduct}>Search</button>
     </div>
