@@ -1,17 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Card } from "antd";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { Button, Card, Result } from "antd";
+import { ThemeContext, MyContextValue } from "../Context";
+import styles from "./product.module.scss";
 const { Meta } = Card;
 interface Drink {
   strDrinkThumb: string;
   strInstructions?: string;
   strCategory: string;
   strAlcoholic: string;
+  strInstructionsIT: string;
 }
 const SingleProduct: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Drink | null>(null);
+  const value: MyContextValue | undefined = useContext(ThemeContext);
+
   const fetchUrl = async () => {
+    value?.setLoading(true);
+
     try {
       const response = await fetch(
         `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`
@@ -22,6 +29,7 @@ const SingleProduct: React.FC = () => {
     } catch (err) {
       console.log(err);
     }
+    value?.setLoading(false);
   };
   useEffect(() => {
     fetchUrl();
@@ -29,7 +37,8 @@ const SingleProduct: React.FC = () => {
 
   return (
     <div>
-      {product && (
+      {value?.loading && <div className={styles.loading}>Loading&#8230;</div>}
+      {product ? (
         <Card
           hoverable
           style={{ width: 440 }}
@@ -37,9 +46,21 @@ const SingleProduct: React.FC = () => {
         >
           <Meta
             title={product.strCategory}
-            description={product.strInstructions}
+            description={product.strInstructions || product.strInstructionsIT}
           />
+          <Link to={"/"}>
+            <Button
+              type="primary"
+              style={{ marginTop: "12px", float: "right" }}
+            >
+              GO BACK
+            </Button>
+          </Link>
         </Card>
+      ) : (
+        !value?.loading && (
+          <Result status="404" title="404" subTitle="Not a product" />
+        )
       )}
     </div>
   );

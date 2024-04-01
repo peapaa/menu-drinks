@@ -6,6 +6,7 @@ export interface Drink {
   strDrinkThumb: string;
   strCategory: string;
   strInstructions: string;
+  strInstructionsIT: string;
 }
 export interface MyContextValue {
   loading: boolean;

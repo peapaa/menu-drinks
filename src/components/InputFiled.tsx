@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import styles from "./product.module.scss";
-import { ThemeContext, MyContextValue, Drink } from "../Context";
+import { ThemeContext, MyContextValue } from "../Context";
 
 const InputFiled: React.FC = () => {
   const value: MyContextValue | undefined = useContext(ThemeContext);
