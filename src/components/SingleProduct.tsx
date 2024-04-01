@@ -36,23 +36,21 @@ const SingleProduct: React.FC = () => {
   }, [id]);
 
   return (
-    <div>
+    <div className={styles.cardForm}>
       {value?.loading && <div className={styles.loading}>Loading&#8230;</div>}
       {product ? (
         <Card
           hoverable
-          style={{ width: 440 }}
+          className={styles.card}
           cover={<img src={product.strDrinkThumb} alt={product.strAlcoholic} />}
         >
           <Meta
+            className={styles.cardMeta}
             title={product.strCategory}
             description={product.strInstructions || product.strInstructionsIT}
           />
           <Link to={"/"}>
-            <Button
-              type="primary"
-              style={{ marginTop: "12px", float: "right" }}
-            >
+            <Button type="primary" className={styles.cardButton}>
               GO BACK
             </Button>
           </Link>
